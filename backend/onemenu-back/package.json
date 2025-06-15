@@ -1,0 +1,29 @@
+{
+  "name": "onemenu-back",
+  "version": "1.0.0",
+  "description": "```bash npm init # entry point: app.ts npm i express npm i --save-dev @types/express npm i --save-dev typescript npm i --save-dev ts-node-dev @types/node npx tsc --init ```",
+  "license": "ISC",
+  "author": "pixelpolo",
+  "type": "commonjs",
+  "main": "app.ts",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "build": "rimraf dist && tsc",
+    "start": "node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.1",
+    "rimraf": "^6.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}
