@@ -2,7 +2,7 @@ import express from "express";
 import { Request, Response } from "express";
 import corsMiddleware from "./middlewares/cors.middleware";
 import cookieParser from "cookie-parser";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 // Express app
 const app = express();
@@ -35,6 +35,6 @@ export default app;
 if (require.main === module) {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    console.log(process.env.PORT)
+    console.log(process.env.PORT);
   });
 }
