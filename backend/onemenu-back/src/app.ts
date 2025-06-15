@@ -2,8 +2,13 @@ import express from "express";
 import { Request, Response } from "express";
 import corsMiddleware from "./middlewares/cors.middleware";
 import cookieParser from "cookie-parser";
+import dotenv from 'dotenv';
 
+// Express app
 const app = express();
+
+// Environment vars
+dotenv.config();
 const port = process.env.PORT || 8080;
 
 // Middleware to parse JSON
@@ -30,5 +35,6 @@ export default app;
 if (require.main === module) {
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    console.log(process.env.PORT)
   });
 }
