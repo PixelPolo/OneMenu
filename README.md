@@ -1,4 +1,4 @@
-# OneMenu
+# OneMenu (IN PROGRESS)
 
 **OneMenu** is a collaborative meal planning app designed to help users create a shared menu  
 by allowing invited guests to vote on various starters, main courses, desserts, and more.  
