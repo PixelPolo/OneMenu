@@ -220,3 +220,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# --- Personal script ---
+rundocker.sh
+zTODO.md
