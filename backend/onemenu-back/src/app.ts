@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import corsMiddleware from "./middlewares/cors.middleware";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import userRoutes from "./api/routes/user.routes";
 
 // Express app
 const app = express();
@@ -26,7 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Routes
-// TODO
+app.use("/user", userRoutes)
 
 // Export the app for test suite
 export default app;
