@@ -51,9 +51,20 @@ npm start
 ### Build the image and run the container
 
 ```bash
-docker build --build-arg DATABASE_URL=".../!\..." -t onemenu-back .
-docker run --name onemenu-back-container -p 8080:8080 onemenu-back
-docker rm -f onemenu-back-container # to delete the container
+# Build only with DATABASE_URL (used by Prisma)
+docker build \
+  --build-arg DATABASE_URL="$DATABASE_URL" \
+  -t onemenu-back .
+
+# Run with all env vars passed (used by Prisma and Auth0 jwt)
+docker run --rm --name onemenu-back-container -p 8080:8080 \
+  -e DATABASE_URL="$DATABASE_URL" \
+  -e AUDIENCE="$AUDIENCE" \
+  -e ISSUER_BASE_URL="$ISSUER_BASE_URL" \
+  onemenu-back
+
+# To delete the container
+docker rm -f onemenu-back-container
 ```
 
 ### Dockerfile

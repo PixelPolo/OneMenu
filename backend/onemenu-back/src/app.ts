@@ -1,8 +1,9 @@
+import dotenv from "dotenv";
 import express from "express";
+import cookieParser from "cookie-parser";
 import { Request, Response } from "express";
 import corsMiddleware from "./middlewares/cors.middleware";
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import { checkJwt } from "./middlewares/checkjwt.middleware";
 import userRoutes from "./api/routes/user.routes";
 
 // Express app
@@ -17,6 +18,9 @@ app.use(express.json());
 
 // Middleware for CORS
 app.use(corsMiddleware);
+
+// Secure all routes with Auth0
+app.use(checkJwt)
 
 // CookieParser for JWT
 app.use(cookieParser());
