@@ -12,6 +12,9 @@ RUN npm install
 # Copy the full source code
 COPY . .
 
+# Copy .env manually if present
+COPY .env .env
+
 # Generate the Prisma client
 RUN npx prisma generate
 
@@ -28,6 +31,7 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY package*.json ./
+COPY .env .env
 
 # Install only production dependencies
 RUN npm install --only=production
