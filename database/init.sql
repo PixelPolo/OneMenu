@@ -11,10 +11,9 @@
 ------------
 
 CREATE TABLE public."user" (
-    "userID" VARCHAR(128) PRIMARY KEY,  -- Auth0 userID
-    "email" VARCHAR(128),               -- Auth0 email
-    "name" VARCHAR(128),                -- Auth0 name
-    "creationDate" TIMESTAMP DEFAULT NOW()
+    "userID" VARCHAR(128) PRIMARY KEY,      -- Auth0 userID
+    "email" VARCHAR(128) UNIQUE NOT NULL,   -- Auth0 email
+    "name" VARCHAR(128) NOT NULL            -- Auth0 name
 );
 
 ----------
@@ -22,27 +21,10 @@ CREATE TABLE public."user" (
 ----------
 
 CREATE TABLE public."role" (
-    "roleID" VARCHAR(8) PRIMARY KEY, -- R1, R2, etc.
+    "roleID" VARCHAR(8) PRIMARY KEY,        -- R1, R2, etc.
     "name" VARCHAR(64) UNIQUE NOT NULL,
     "description" VARCHAR(256)
 );
-
-INSERT INTO	public."role" ("roleID", "name", "description") VALUES
-	(
-		'R1',
-		'Standard',
-		'Basic access with limited permissions.'
-	),
-	(
-		'R2',
-		'Business',
-		'Extended access for business features and tools.'
-	),
-	(
-		'R3',
-		'Admin',
-		'Full access with administrative privileges.'
-	);
 
 -----------------
 -- user x role --
@@ -50,7 +32,7 @@ INSERT INTO	public."role" ("roleID", "name", "description") VALUES
 
 CREATE TABLE public."userRole" (
     "userID" VARCHAR(128) NOT NULL, -- FK
-    "roleID" VARCHAR(8) NOT NULL, -- FK
+    "roleID" VARCHAR(8) NOT NULL,   -- FK
     -- FK userID --
     CONSTRAINT fk_userID FOREIGN KEY ("userID") 
     REFERENCES public."user" ("userID") 
@@ -73,10 +55,10 @@ CREATE TABLE public."session" (
     "sessionID" UUID DEFAULT gen_random_uuid () PRIMARY KEY,
     "title" VARCHAR(128) NOT NULL,
     "description" TEXT,
-    "createdByUserID" VARCHAR(128) NOT NULL, -- FK
+    "userID" VARCHAR(128) NOT NULL,     -- FK
     "creationDate" TIMESTAMP DEFAULT NOW(),
-    -- FK createdByUserID --
-    CONSTRAINT fk_createdByUserID FOREIGN KEY ("createdByUserID")
+    -- FK userID --
+    CONSTRAINT fk_userID FOREIGN KEY ("userID")
     REFERENCES public."user"("userID")
     ON DELETE CASCADE
     ON UPDATE CASCADE
@@ -88,13 +70,8 @@ CREATE TABLE public."session" (
 
 CREATE TABLE public."dishType" (
     "dishTypeID" VARCHAR(8) PRIMARY KEY, -- T1, T2, T3, etc
-    "name" VARCHAR(64) NOT NULL
+    "name" VARCHAR(64) UNIQUE NOT NULL
 );
-
-INSERT INTO public."dishType" ("dishTypeID", "name") VALUES 
-    ('T1', 'Starter'),
-    ('T2', 'Main'),
-    ('T3', 'Dessert');
 
 ----------
 -- dish --
@@ -108,7 +85,7 @@ CREATE TABLE public."dish" (
     "currency" VARCHAR(64) NOT NULL,
     "dishTypeID" VARCHAR(8) NOT NULL, -- FK
     "sessionID" UUID NOT NULL, -- FK
-    "createdByUserID" VARCHAR(128) NOT NULL, -- FK
+    "userID" VARCHAR(128) NOT NULL, -- FK
     -- FK dishTypeID --
     CONSTRAINT fk_dishTypeID FOREIGN KEY ("dishTypeID") 
     REFERENCES public."dishType" ("dishTypeID") 
@@ -119,8 +96,8 @@ CREATE TABLE public."dish" (
     REFERENCES public."session" ("sessionID")
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    -- FK createdByUserID --
-    CONSTRAINT fk_createdByUserID FOREIGN KEY ("createdByUserID")
+    -- FK userID --
+    CONSTRAINT fk_userID FOREIGN KEY ("userID")
     REFERENCES public."user" ("userID")
     ON DELETE CASCADE
     ON UPDATE CASCADE
@@ -149,8 +126,36 @@ CREATE TABLE public."vote" (
     PRIMARY KEY ("dishID", "userID")
 );
 
--- TODO --
+-----------
+-- SEEDS --
+-----------
 
------------------
--- currencries --
------------------
+INSERT INTO	public."role" ("roleID", "name", "description") VALUES
+	(
+		'R1',
+		'Standard',
+		'Basic access with limited permissions.'
+	),
+	(
+		'R2',
+		'Business',
+		'Extended access for business features and tools.'
+	),
+	(
+		'R3',
+		'Admin',
+		'Full access with administrative privileges.'
+	);
+
+INSERT INTO public."dishType" ("dishTypeID", "name") VALUES 
+    ('T1', 'Starter'),
+    ('T2', 'Main'),
+    ('T3', 'Dessert'),
+    ('T4', 'Side'),
+    ('T5', 'Drink'),
+    ('T6', 'Appetizer'),
+    ('T7', 'Soup'),
+    ('T8', 'Salad'),
+    ('T9', 'Cheese'),
+    ('T10', 'Bread'),
+    ('T11', 'Sauce');
