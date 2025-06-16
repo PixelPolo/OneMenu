@@ -98,3 +98,18 @@ EXPOSE 8080
 # Start the compiled app
 CMD ["node", "dist/app.js"]
 ```
+
+## Prisma ORM
+
+<https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql>
+
+```bash
+npm install prisma --save-dev
+npx prisma init # generate `prisma/schema.prisma` and `.env`
+npx prisma db pull # database introspection
+npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql
+npx prisma migrate resolve --applied 0_init
+
+npm install @prisma/client
+npx prisma generate # todo after each db modif
+```

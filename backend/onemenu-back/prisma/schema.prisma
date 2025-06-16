@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model dish {
+  dishID      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @db.VarChar(64)
+  description String?  @db.VarChar(256)
+  price       Decimal  @db.Decimal(15, 4)
+  currency    String   @db.VarChar(64)
+  dishTypeID  String   @db.VarChar(8)
+  sessionID   String   @db.Uuid
+  userID      String   @db.VarChar(128)
+  dishType    dishType @relation(fields: [dishTypeID], references: [dishTypeID], map: "fk_dishtypeid")
+  session     session  @relation(fields: [sessionID], references: [sessionID], onDelete: Cascade, map: "fk_sessionid")
+  user        user     @relation(fields: [userID], references: [userID], onDelete: Cascade, map: "fk_userid")
+  vote        vote[]
+}
+
+model dishType {
+  dishTypeID String @id @db.VarChar(8)
+  name       String @unique @db.VarChar(64)
+  dish       dish[]
+}
+
+model role {
+  roleID      String     @id @db.VarChar(8)
+  name        String     @unique @db.VarChar(64)
+  description String?    @db.VarChar(256)
+  userRole    userRole[]
+}
+
+model session {
+  sessionID    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String    @db.VarChar(128)
+  description  String?
+  userID       String    @db.VarChar(128)
+  creationDate DateTime? @default(now()) @db.Timestamp(6)
+  dish         dish[]
+  user         user      @relation(fields: [userID], references: [userID], onDelete: Cascade, map: "fk_userid")
+}
+
+model user {
+  userID   String     @id @db.VarChar(128)
+  email    String     @unique @db.VarChar(128)
+  name     String     @db.VarChar(128)
+  dish     dish[]
+  session  session[]
+  userRole userRole[]
+  vote     vote[]
+}
+
+model userRole {
+  userID String @db.VarChar(128)
+  roleID String @db.VarChar(8)
+  role   role   @relation(fields: [roleID], references: [roleID], map: "fk_roleid")
+  user   user   @relation(fields: [userID], references: [userID], onDelete: Cascade, map: "fk_userid")
+
+  @@id([userID, roleID], map: "pk_userrole")
+}
+
+model vote {
+  dishID String @db.Uuid
+  userID String @db.VarChar(128)
+  note   Int
+  dish   dish   @relation(fields: [dishID], references: [dishID], onDelete: Cascade, map: "fk_dishid")
+  user   user   @relation(fields: [userID], references: [userID], onDelete: Cascade, map: "fk_userid")
+
+  @@id([dishID, userID], map: "pk_vote")
+}
