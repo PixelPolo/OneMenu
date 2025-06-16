@@ -1,5 +1,5 @@
 import prisma from "../client/prisma.client";
-import { user } from "../../generated/prisma";
+import { user } from "@prisma/client";
 
 export class UserService {
   // Get all
@@ -11,13 +11,6 @@ export class UserService {
   async getByID(id: string): Promise<user | null> {
     return await prisma.user.findUnique({
       where: { userID: id },
-    });
-  }
-
-  // Get by name (unique)
-  async getByName(name: string): Promise<user | null> {
-    return await prisma.user.findUnique({
-      where: { name },
     });
   }
 

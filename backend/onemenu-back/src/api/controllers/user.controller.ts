@@ -1,4 +1,4 @@
-import { user } from "../../generated/prisma";
+import { user } from "@prisma/client";
 import { UserService } from "../services/user.service";
 import { Request, Response } from "express";
 
@@ -25,20 +25,6 @@ export class UserController {
   async getUserByID(req: Request, res: Response): Promise<any> {
     try {
       const user: user | null = await this.userService.getByID(req.params.id);
-      console.log(user);
-      res.status(200).json(user);
-    } catch (error: unknown) {
-      console.error(error);
-      res.status(400).json({ error: (error as Error).message });
-    }
-  }
-
-  // GET /user/:name
-  async getUserByName(req: Request, res: Response): Promise<any> {
-    try {
-      const user: user | null = await this.userService.getByName(
-        req.params.name
-      );
       console.log(user);
       res.status(200).json(user);
     } catch (error: unknown) {
