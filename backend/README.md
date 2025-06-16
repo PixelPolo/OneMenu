@@ -51,7 +51,7 @@ npm start
 ### Build the image and run the container
 
 ```bash
-docker build -t onemenu-back .
+docker build --build-arg DATABASE_URL=".../!\..." -t onemenu-back .
 docker run --name onemenu-back-container -p 8080:8080 onemenu-back
 docker rm -f onemenu-back-container # to delete the container
 ```
@@ -73,6 +73,10 @@ RUN npm install
 # Copy the full source code
 COPY . .
 
+# To run in local, pass the args in docker run...
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 # Generate the Prisma client
 RUN npx prisma generate
 
@@ -92,6 +96,10 @@ COPY package*.json ./
 
 # Install only production dependencies
 RUN npm install --only=production
+
+# To run in local, pass the args in docker run...
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 
 # Generate the Prisma client
 RUN npx prisma generate

@@ -221,3 +221,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /src/generated/prisma
+
+# --- Personal script ---
+rundocker.sh
