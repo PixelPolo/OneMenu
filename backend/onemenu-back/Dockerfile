@@ -31,6 +31,9 @@ COPY package*.json ./
 # Install only production dependencies
 RUN npm install --only=production
 
+# Generate the Prisma client
+RUN npx prisma generate
+
 # Set the port environment variable (required by Render)
 ENV PORT=8080
 
