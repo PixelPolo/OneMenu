@@ -26,6 +26,7 @@ WORKDIR /app
 
 # Copy the compiled code and minimal required files from the builder stage
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
 COPY package*.json ./
 
 # Install only production dependencies
