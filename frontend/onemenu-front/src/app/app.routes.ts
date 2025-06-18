@@ -15,8 +15,12 @@ export const routes: Routes = [
     title: 'Home',
   },
   {
-    path: '**',
+    path: '404',
     component: NotFound,
-    title: '404',
+    title: '404'
+  },
+  {
+    path: '**',
+    redirectTo: '404'
   },
 ];

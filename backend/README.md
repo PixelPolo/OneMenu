@@ -63,7 +63,7 @@ docker run --rm --name onemenu-back-container -p 8080:8080 \
   -e ISSUER_BASE_URL="$ISSUER_BASE_URL" \
   onemenu-back
 
-# To delete the container
+# Delete the container (optional)
 docker rm -f onemenu-back-container
 ```
 
