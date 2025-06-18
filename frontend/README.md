@@ -80,8 +80,6 @@ visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools
 
 <https://dextrop.medium.com/containerizing-a-angular-application-using-docker-a71968269821>
 
-
-
 ```bash
 # Build the image
 docker build -t onemenu-front .
