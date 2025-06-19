@@ -1,34 +1,35 @@
 # ---------- STAGE 1: Build the Angular app ----------
-# Use Node.js LTS version
 FROM node:20 AS builder
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-
-# Install Angular dependencies
 RUN npm install
 
-# Copy the full source code
+# Copy full source code
 COPY . .
 
-# Build the Angular app in production mode
+# Build Angular app in production mode
 RUN npm run build --prod
 
-# ---------- STAGE 2: Serve the built app with Nginx ----------
-# Use a minimal Nginx image to serve static files
+# ---------- STAGE 2: Serve the built app with NGINX ----------
 FROM nginx:alpine
 
-# Copy the built Angular app from the builder stage
+# Copy Angular build to NGINX HTML folder
 COPY --from=builder /app/dist/onemenu-front/browser /usr/share/nginx/html
 
-# Copy the nginx.config
+# Copy NGINX configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port for Angular app
+# Copy env.template.js and entrypoint script
+COPY public/env.template.js /usr/share/nginx/html/public/env.template.js
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Expose HTTP port
 EXPOSE 80
 
-# Start the Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Inject env vars and run NGINX
+ENTRYPOINT ["/entrypoint.sh"]
